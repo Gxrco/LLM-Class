@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain.prompts import PromptTemplate
+from tools.tools import get_profile_url_tavily
 
 # Library to use tools, tools are function to communicate LLM with the exterior
 from langchain_core.tools import Tool
@@ -33,7 +34,7 @@ def lookup(name: str) -> str:
     tools_for_agent = [
         Tool(
             name="Crawl Google 4 linkedin profile page",
-            func="?",
+            func=get_profile_url_tavily,
             description="Useful when you need to get a LinkedIn page URL",
         )
     ]
@@ -61,5 +62,5 @@ def lookup(name: str) -> str:
 
 
 if __name__ == '__main__':
-    linkedin_profile_url = lookup(name="Gerson Alexander Ramirez Conoz")
+    linkedin_profile_url = lookup(name="Gerson Alexander Ramírez Conoz")
     print(linkedin_profile_url)
