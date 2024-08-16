@@ -14,3 +14,8 @@ This project/script generates a brief summary and two interesting facts about a 
 - Laboratory 01 - Content by prompt 
 - Laboratory 02 - Summary with scrapping
 - Laboratory 03 - Scrapping with Travily ⬅️
+
+## Screenshot
+
+<img width="1474" alt="image" src="https://github.com/user-attachments/assets/a3dcd3ea-365c-480e-b570-dddb9f569769">
+
