@@ -1,66 +1,50 @@
-import os
-from dotenv import load_dotenv
-from langchain_core.prompts import PromptTemplate
-from langchain_openai import OpenAIEmbeddings, ChatOpenAI
-from langchain_pinecone import PineconeVectorStore
-from langchain import hub
-from langchain.chains.combine_documents import create_stuff_documents_chain
-from langchain.chains.retrieval import create_retrieval_chain
-from langchain_core.runnables import RunnablePassthrough
+from backend.core import run_llm
+import streamlit as st
+from streamlit_chat import message
+from typing import Set
 
-load_dotenv()
+st.header("Python 🐍 - Documentation Helper Bot")
+
+prompt = st.text_input("Prompt", placeholder="Enter your prompt here")
+
+if "chat_answers_history" not in st.session_state:
+    st.session_state["chat_answers_history"] = []
+if "user_prompt_history" not in st.session_state:
+    st.session_state["user_prompt_history"] = []
+if "chat_history" not in st.session_state:
+    st.session_state["chat_history"] = []
 
 
-def format_docs(docs):
-    return "\n\n".join(doc.page_content for doc in docs)
+def create_sources_string(source_urls: Set[str]) -> str:
+    if not source_urls:
+        return ""
+    source_list = list(source_urls)
+    source_list.sort()
+    sources_string = "sources: \n"
+    for i, source in enumerate(source_list):
+        sources_string += f"{i + 1}. {source}\n"
+    return sources_string
 
 
-if __name__ == "__main__":
-    print("Retrieving...")
+if prompt:
+    with st.spinner("Generating response..."):
+        generated_response = run_llm(
+            query=prompt, chat_history=st.session_state["chat_history"]
+        )
 
-    embeddings = OpenAIEmbeddings()
-    llm = ChatOpenAI()
+        sources = set(doc.metadata["source"] for doc in generated_response["source"])
 
-    query = "what is Pinecone in machine learning?"
-    chain = PromptTemplate.from_template(template=query) | llm
-    result = chain.invoke(input={})
-    print(result.content)
+        formatted_response = (
+            f"{generated_response['result']}\n\n{create_sources_string(sources)}"
+        )
 
-    vectorstore = PineconeVectorStore(
-        index_name=os.environ.get("INDEX_NAME"), embedding=embeddings
-    )
+        st.session_state["user_prompt_history"].append(prompt)
+        st.session_state["chat_answers_history"].append(formatted_response)
+        st.session_state["chat_history"].append(("human", prompt))
+        st.session_state["chat_history"].append(("ai", generated_response["result"]))
 
-    retrieval_qa_chat_prompt = hub.pull("langchain-ai/retrieval-qa-chat")
-
-    combine_docs_chain = create_stuff_documents_chain(llm, retrieval_qa_chat_prompt)
-
-    retrieval_chain = create_retrieval_chain(
-        retriever=vectorstore.as_retriever(),
-        combine_docs_chain=combine_docs_chain
-    )
-
-    result = retrieval_chain.invoke({"input": query})
-
-    print(result)
-
-    template = """Use the following pieces of context to answer the question:
-    If you don't know the answer, just say you don't know, don't try to answer.
-    Use three sentences maximum and keep the answer as concise as possible.
-    Always say "thanks for asking!" at the end of the answer.
-
-    {context}
-
-    Question: {question}
-
-    Helpful Answer: """
-    custom_rag_prompt = PromptTemplate.from_template(template)
-
-    rag_chain = (
-            {"context": vectorstore.as_retriever() | format_docs, "question":
-                RunnablePassthrough()}
-            | custom_rag_prompt
-            | llm
-    )
-
-    res = rag_chain.invoke(query)
-    print(res)
+if st.session_state["chat_answers_history"]:
+    for user_query, generated_response in zip(st.session_state["user_prompt_history"],
+                                              st.session_state["chat_answers_history"]):
+        message(user_query, is_user=True)
+        message(generated_response)
