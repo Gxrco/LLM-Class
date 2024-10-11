@@ -1,34 +1,33 @@
 from dotenv import load_dotenv
+import os
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from consts import INDEX_NAME
 from langchain_community.document_loaders import ReadTheDocsLoader
 from langchain_openai import OpenAIEmbeddings
 from langchain_pinecone import PineconeVectorStore
+from firecrawl import FirecrawlApp
+from langchain.schema import Document
 
 load_dotenv()
 
 embeddings = OpenAIEmbeddings(model="text-embedding-ada-002")
 
 
-def ingest_docs():
-    loader = ReadTheDocsLoader("docs.python.org/3.10")
-    raw_documents = loader.load()
-    print(f"loaded {len(raw_documents)} raw documents")
+def ingest_with_firecrawl() -> None:
+    app = FirecrawlApp(api_key=os.environ["FIRECRAWL_API_KEY"])
+    url = "https://minecraft.fandom.com/es/wiki/Minecraft"
 
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=600, chunk_overlap=50)
-    documents = text_splitter.split_documents(raw_documents)
-    print(f"split {len(documents)} documents")
+    page_content = app.scrape_url(url=url, 
+                                        params={"onlyMainContent": True})
+    print(page_content)
+    doc = Document(page_content=str(page_content), metadata={"source": url})
 
-    for doc in documents:
-        new_url = doc.metadata["source"]
-        new_url = new_url.replace("docs.python.org", "https://docs.python.org")
-        doc.metadata.update({"source": new_url})
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=2000, chunk_overlap=200)
+    docs = text_splitter.split_documents([doc])
 
-    print(f"Going to add {len(documents)} to Pinecone")
     PineconeVectorStore.from_documents(
-        documents, embeddings, index_name=INDEX_NAME
+        docs, embeddings, index_name=os.environ["INDEX_NAME"]
     )
 
-
 if __name__ == "__main__":
-    ingest_docs()
+    ingest_with_firecrawl()
+
