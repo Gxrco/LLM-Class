@@ -22,6 +22,9 @@ google-search-results = "*"
 python-dotenv = "*"
 pinecone = "*"
 beautifulsoup4 = "*"
+streamlit = "*"
+altair = "<5"
+streamlit-chat = "*"
 
 [dev-packages]
 
