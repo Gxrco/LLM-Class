@@ -4,7 +4,7 @@ from streamlit_chat import message
 from typing import Set
 
 st.header("Python 🐍 - Documentation Helper Bot")
-
+st.write("Welcome to the Python 🐍 - Documentation Helper Bot! This bot is designed to help you find answers to your Python questions. This project was made by Gerson Ramírez (Gerco)")
 prompt = st.text_input("Prompt", placeholder="Enter your prompt here")
 
 if "chat_answers_history" not in st.session_state:
