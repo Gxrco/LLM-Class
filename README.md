@@ -1,7 +1,7 @@
 
-# Chat with Python 🐍 Documentation
+# Chat about Minecraft ⛏️ - ChatBot 🤖 
 
-This project is designed to help users find answers to their Python questions by leveraging a combination of natural language processing, document ingestion, and a chatbot interface.
+This project is designed to help users find answers to their Minecraft questions by leveraging a combination of natural language processing, document ingestion, and a chatbot interface.
 
 
 ## Features
@@ -10,10 +10,9 @@ This project is designed to help users find answers to their Python questions by
 - **LangChain Framework:** Integrates langchain components like langchain-core, langchain-community, and langchain-text-splitters for handling and processing text data.
 - **Pinecone Model:** text-embedding-ada-002 model for efficient vector search.
 - **Pinecone Integration:** Stores these embedded chunks in Pinecone’s vector database for fast retrieval during search queries.
+- **FireCrawl Scrapping:** an AI-first web scraping tool. It allows you to easily crawl and extract clean, structured data from websites.
 
 ## Demo
 
 #### This project is avaliable online:
-[Click Here to Test Project Now!](https://python-doc-assistant-a8493fe25b66.herokuapp.com)
 
-<img width="1069" alt="image" src="https://github.com/user-attachments/assets/df368fea-61d1-4ec9-a176-2beed6e41c4f">
