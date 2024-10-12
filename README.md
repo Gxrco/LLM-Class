@@ -1,8 +1,5 @@
 
-# Chat about Minecraft ⛏️ - ChatBot 🤖 
-
-This project is designed to help users find answers to their Minecraft questions by leveraging a combination of natural language processing, document ingestion, and a chatbot interface.
-
+# Chat with Langchain Documentation 🤖 
 
 ## Features
 
@@ -14,5 +11,8 @@ This project is designed to help users find answers to their Minecraft questions
 
 ## Demo
 
-#### This project is avaliable online:
-[Click here to talk with Minecraft ChatBot now!](https://minecraft-chatbot-88871c1ad3ec.herokuapp.com)
+![image](https://github.com/user-attachments/assets/ce9b91a4-1ad2-406a-b3b2-ad5f12b36f9b)
+
+![image](https://github.com/user-attachments/assets/110594db-266b-477a-85d3-cca7fb8a3976)
+
+![image](https://github.com/user-attachments/assets/ba19077b-ea3d-435a-a2f6-83d8c5b2c3fe)
