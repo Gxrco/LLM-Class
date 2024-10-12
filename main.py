@@ -3,8 +3,8 @@ import streamlit as st
 from streamlit_chat import message
 from typing import Set
 
-st.header("Minecraft ⛏️ - Helper Bot 🤖")
-st.write("Minecraft Helper Bot! This bot is designed to help you find answers to your Minecraft questions. This project was made by Gerson Ramírez (Gerco)")
+st.header("Langchain - Documentation Helper Bot")
+
 prompt = st.text_input("Prompt", placeholder="Enter your prompt here")
 
 if "chat_answers_history" not in st.session_state:
