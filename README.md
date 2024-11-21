@@ -14,8 +14,8 @@ This project is designed to help users find answers to their Minecraft questions
 
 ## Demo
 
-#### This project is avaliable online:
-[Click here to talk with Minecraft ChatBot now!](https://minecraft-chatbot-88871c1ad3ec.herokuapp.com)
+#### Project is no longer avaliable online ❌:
+Deployment link has been removed
 
 
 
